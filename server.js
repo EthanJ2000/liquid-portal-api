@@ -25,6 +25,15 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const port = process.env.PORT || 8081;
 
+app.get("/", function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+});
+
 io.on("connection", (socket) => {
     socket.on("join-room", (roomId, userId) => {
         console.log(roomId, userId);
