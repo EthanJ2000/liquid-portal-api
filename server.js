@@ -20,10 +20,6 @@ app.use(function (req, res, next) {
     );
 });
 const server = require("http").Server(app);
-const peerServer = ExpressPeerServer(server, {
-    path: "https://liquid-portal.herokuapp.com/",
-});
-app.use("/peerjs", ExpressPeerServer(peerServer));
 
 const io = require("socket.io")(server, {
     cors: {
