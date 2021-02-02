@@ -22,7 +22,11 @@ app.use(function (req, res, next) {
     next();
 });
 const server = require("http").Server(app);
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, {
+    cors: {
+        origin: "*",
+    },
+});
 const port = process.env.PORT || 8081;
 
 app.get("/", function (req, res) {
