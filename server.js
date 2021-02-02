@@ -1,4 +1,5 @@
 const express = require("express");
+const { ExpressPeerServer } = require("peer");
 const cors = require("cors");
 const app = express();
 app.use(cors({ origin: "*" }));
@@ -17,11 +18,13 @@ app.use(function (req, res, next) {
         "Access-Control-Allow-Headers",
         "X-Requested-With,content-type"
     );
-
-    // Pass to next layer of middleware
-    next();
 });
 const server = require("http").Server(app);
+const peerServer = ExpressPeerServer(server, {
+    path: "https://liquid-portal.herokuapp.com/",
+});
+app.use("/peerjs", ExpressPeerServer(peerServer));
+
 const io = require("socket.io")(server, {
     cors: {
         origin: "*",
@@ -35,7 +38,6 @@ app.get("/", function (req, res) {
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept"
     );
-    next();
 });
 
 io.on("connection", (socket) => {
