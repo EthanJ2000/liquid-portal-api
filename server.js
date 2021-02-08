@@ -3,37 +3,14 @@ const { ExpressPeerServer } = require("peer");
 const cors = require("cors");
 const app = express();
 app.use(cors({ origin: "*" }));
-app.use(function (req, res, next) {
-    // Website you wish to allow to connect
-    res.setHeader("Access-Control-Allow-Origin", "*");
-
-    // Request methods you wish to allow
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-    );
-
-    // Request headers you wish to allow
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "X-Requested-With,content-type"
-    );
-});
+const socket = require("socket.io");
 const server = require("http").Server(app);
+const port = process.env.PORT || 8081;
 
-const io = require("socket.io")(server, {
+const io = socket(server, {
     cors: {
         origin: "*",
     },
-});
-const port = process.env.PORT || 8081;
-
-app.get("/", function (req, res) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
 });
 
 io.on("connection", (socket) => {
@@ -48,4 +25,4 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(port);
+server.listen(port, () => console.log("server running on port ", port));
