@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 app.use(cors({ origin: "*" }));
 const socket = require("socket.io");
-const server = require("https").Server(app);
+const server = require("http").Server(app);
 const port = process.env.PORT || 8081;
 
 const io = socket(server, {
@@ -25,4 +25,4 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(port, () => console.log("server running on port ", port));
+server.listen(port, () => console.log("server running on port", port));
